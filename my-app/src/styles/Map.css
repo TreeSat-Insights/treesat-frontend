@@ -57,11 +57,12 @@
 }
 
 .side-panel img {
-  width: calc(100% - 40px); /* Full width of the side panel minus a 20px margin on each side */
-  height: auto; /* Maintain aspect ratio */
-  margin: 10px; /* Add a 10px margin around each image */
-  object-fit: contain; /* Ensure images scale well while preserving aspect ratio */
+  max-width: 100%; /* Restrict the image width to the width of the side panel */
+  height: auto; /* Maintain the aspect ratio */
+  object-fit: contain; /* Ensure the image is fully contained within its parent */
+  margin: 10px 0; /* Add some vertical margin */
 }
+
 
 .slider {
   display: flex;

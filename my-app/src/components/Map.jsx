@@ -59,6 +59,20 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
             cell.on("click", () => {
               setSidePanelContent(`Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`);
               setIsSidePanelOpen(true);
+            
+              // Adjust the center position to make the clicked cell appear higher
+              const adjustedCenter = [
+                center[0] - 0.1, // Decrease latitude to move the view higher
+                center[1], // Keep the longitude the same
+              ];
+            
+              // Set the map view to center on the adjusted position
+              mapRef.current.setView(adjustedCenter, mapRef.current.getZoom(), {
+                animate: true, // Smooth transition
+              });
+            
+              // Optionally set z-index to ensure the clicked cell is visible
+              cell.setStyle({ zIndex: 2001 }); // Higher than the side panel z-index
             });
 
             gridLayer.addLayer(cell);

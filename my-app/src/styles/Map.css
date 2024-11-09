@@ -16,11 +16,11 @@
 
 .side-panel {
   position: absolute;
-  top: 60%;  /* Move the panel a bit lower */
+  top: 70%;  /* Move the panel a bit lower */
   left: 50%;
-  width: 50%; /* Adjust the width as needed */
+  width: 60%; /* Adjust the width as needed */
   max-width: 600px; /* Optional max-width */
-  height: 70%; /* Increased height */
+  height: 55%; /* Increased height */
   background-color: white;
   border: 1px solid #ccc;
   padding: 20px;

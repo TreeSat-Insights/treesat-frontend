@@ -1,52 +1,48 @@
-/* Container for map and side panel */
 .map-container {
   display: flex;
   height: 100vh;
   width: 100%;
-  font-family: Arial, sans-serif; /* Use Arial as the primary font */
+  position: relative; /* To position the side panel over the map */
 }
 
-/* The map will take up the remaining space */
 #map {
-  flex: 1;
+  height: 100%;
+  width: 100%;
+  position: absolute; /* Ensure the map fills the screen */
+  top: 0;
+  left: 0;
+  z-index: 1; /* Ensure the map is behind the side panel */
 }
 
-/* Side panel styling */
 .side-panel {
-  width: 300px;
+  position: absolute;
+  top: 60%;  /* Move the panel a bit lower */
+  left: 50%;
+  width: 50%; /* Adjust the width as needed */
+  max-width: 600px; /* Optional max-width */
+  height: 70%; /* Increased height */
   background-color: white;
-  border-left: 1px solid #ccc;
+  border: 1px solid #ccc;
   padding: 20px;
-  overflow-y: auto;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Ensures it stays on top of the map */
-  position: relative; /* For close button positioning */
-  font-family: Arial, sans-serif; /* Ensure Arial is used in the side panel */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure it stays on top of the map */
+  transform: translate(-50%, -50%); /* Center the panel */
+  opacity: 0; /* Initially hidden */
+  visibility: hidden; /* Start as hidden */
+  transition: opacity 0.3s ease, visibility 0s 0.3s; /* Smooth transition */
 }
 
-/* Heading inside the side panel */
-.side-panel h2 {
-  margin-top: 0;
-  font-size: 20px; /* Slightly larger for better emphasis */
-  font-weight: bold;  /* Bold for the heading */
-  color: #333; /* Darker color for better contrast */
-  letter-spacing: 0.5px; /* Slightly more space for readability */
+.side-panel.open {
+  opacity: 1; /* Make visible */
+  visibility: visible; /* Ensure visibility */
+  transition: opacity 0.3s ease, visibility 0s 0s; /* Transition for smooth fade-in */
 }
 
-/* Paragraphs inside the side panel */
-.side-panel p {
-  margin: 10px 0;
-  font-size: 16px;  /* Slightly larger text for better readability */
-  color: #555;  /* Darker grey for paragraph text */
-  line-height: 1.6;  /* Better line spacing for readability */
-}
-
-/* Close button inside the side panel */
 .close-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #ff4d4d;  /* Softer red */
+  background-color: #ff4d4d;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -56,12 +52,6 @@
   transition: background-color 0.3s ease;
 }
 
-/* Close button hover effect */
 .close-btn:hover {
-  background-color: #e60000;  /* Slightly darker red on hover */
-}
-
-/* Optional: Adding smooth transitions for the map container resize */
-#map {
-  transition: width 0.3s ease;
+  background-color: #e60000;
 }

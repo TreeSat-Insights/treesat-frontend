@@ -73,9 +73,9 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue", maxZoom = 1
 
   return (
     <div className="map-container">
-      <div id="map" style={{ height: "100vh", width: isSidePanelOpen ? "calc(100% - 300px)" : "100%" }}></div>
+      <div id="map"></div>
       {isSidePanelOpen && sidePanelContent && (
-        <div className="side-panel">
+        <div className={`side-panel ${isSidePanelOpen ? "open" : ""}`}>
           <button className="close-btn" onClick={() => setIsSidePanelOpen(false)}>X</button>
           <h2>Details</h2>
           <p>{sidePanelContent}</p>

@@ -17,7 +17,7 @@
 .side-panel {
   position: absolute;
   top: 50%;  /* Move the panel a bit lower */
-  left: 50%;
+  right: 30px; /* Add some margin from the right edge */
   width: 80%; /* Adjust the width as needed */
   max-width: 600px; /* Optional max-width */
   height: 90%; /* Increased height */
@@ -26,7 +26,7 @@
   padding: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   z-index: 1000; /* Ensure it stays on top of the map */
-  transform: translate(-50%, -50%); /* Center the panel */
+  transform: translate(0, -50%); /* Center the panel vertically */
   opacity: 0; /* Initially hidden */
   visibility: hidden; /* Start as hidden */
   transition: opacity 0.3s ease, visibility 0s 0.3s; /* Smooth transition */
@@ -62,7 +62,6 @@
   object-fit: contain; /* Ensure the image is fully contained within its parent */
   margin: 10px 0; /* Add some vertical margin */
 }
-
 
 .slider {
   display: flex;

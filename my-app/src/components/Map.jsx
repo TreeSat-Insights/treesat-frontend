@@ -27,7 +27,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
 
   useEffect(() => {
     if (!mapRef.current) {
-      const map = L.map("map", { minZoom: MIN_ZOOM_LEVEL, maxZoom: MAX_ZOOM_LEVEL }).setView([51.505, -0.09], 13);
+      const map = L.map("map", { minZoom: MIN_ZOOM_LEVEL, maxZoom: MAX_ZOOM_LEVEL }).setView([60.1699, 24.9384], 10);
       mapRef.current = map;
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: MAX_ZOOM_LEVEL }).addTo(map);
 

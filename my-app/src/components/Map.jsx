@@ -6,7 +6,7 @@ import Loader from "./loader";
 
 const fetchGridData = async (lat, lng) => {
   try {
-    const response = await fetch(`http://ec2-35-152-142-1.eu-south-1.compute.amazonaws.com/scan/1/${lat}/${lng}`);
+    const response = await fetch(`http://ec2-15-160-151-201.eu-south-1.compute.amazonaws.com:8000/scan/${lat}/${lng}`);
     if (!response.ok) throw new Error('Network error');
     
     const data = await response.json();

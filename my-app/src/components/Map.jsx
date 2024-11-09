@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "/src/styles/Map.css";
+import CustomSlider from "./ImgSlider";
 
 // Function to fetch the grid data
 const fetchGridData = async (lat, lng) => {
@@ -139,15 +140,17 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
           <button className="close-btn" onClick={() => setIsSidePanelOpen(false)}>X</button>
           <h2>Details</h2>
           <p>{sidePanelContent.text}</p>
-          <div className="image-gallery">
+          <div className="App">
+          <CustomSlider>
             {sidePanelContent.images.length > 0 ? (
-              sidePanelContent.images.map((img, index) => (
-                <img key={index} src={img} alt={`Grid Cell ${index + 1}`} />
-              ))
-            ) : (
-              <p>No images available</p>
-            )}
-          </div>
+                sidePanelContent.images.map((img, index) => (
+                  <img key={index} src={img} alt={`Grid Cell ${index + 1}`} />
+                ))
+              ) : (
+                <p>No images available</p>
+              )}
+          </CustomSlider>
+        </div>
         </div>
       )}
     </div>

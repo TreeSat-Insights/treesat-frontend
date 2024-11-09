@@ -1,27 +1,27 @@
 import { useEffect, useRef } from "react";
-import L from "leaflet";
+import leaflet from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 export default function Map() {
-  const mapRef = useRef(null); 
+  const mapRef = useRef(null); // Reference to the map
 
   useEffect(() => {
-    if (mapRef.current === null) {
-      mapRef.current = L.map("map").setView([51.505, -0.09], 13);
+    // Initialize the map only once
+    if (!mapRef.current) {
+      mapRef.current = leaflet
+        .map("map")
+        .setView([60.1717, 24.9349], 13);
 
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(mapRef.current);
+      // Add the tile layer to the map
+      leaflet
+        .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        })
+        .addTo(mapRef.current);
     }
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
   }, []);
 
-  return <div id="map" style={{ height: "100vh", width: "100%" }}></div>;
+  return <div id="map" style={{ width: "100%", height: "100vh" }}></div>;
 }

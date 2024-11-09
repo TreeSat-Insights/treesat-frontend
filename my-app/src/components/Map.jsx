@@ -2,28 +2,33 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "/src/styles/Map.css";  
 
-export default function Map({ gridSpacingKm = 5, gridColor = "blue", maxZoom = 19 }) {
+export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
   const mapRef = useRef(null);
   const gridLayerRef = useRef(null);
   const [sidePanelContent, setSidePanelContent] = useState(null);
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
 
-  const MIN_ZOOM_LEVEL = 10;
+  const MIN_ZOOM_LEVEL_FOR_GRID = 10;  
+  const MIN_ZOOM_LEVEL = 5;            
+  const MAX_ZOOM_LEVEL = 18; 
 
   useEffect(() => {
     if (!mapRef.current) {
-      const map = L.map("map", { maxZoom }).setView([51.505, -0.09], 13);  // Set custom maxZoom
+      const map = L.map("map", {
+        minZoom: MIN_ZOOM_LEVEL,  
+        maxZoom: MAX_ZOOM_LEVEL,  
+      }).setView([51.505, -0.09], 13);  
       mapRef.current = map;
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom,
+        maxZoom: MAX_ZOOM_LEVEL,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(map);
 
       const createGrid = () => {
         const zoomLevel = map.getZoom();
         // Remove the grid if zoom is too low
-        if (zoomLevel < MIN_ZOOM_LEVEL) {
+        if (zoomLevel < MIN_ZOOM_LEVEL_FOR_GRID) {
           gridLayerRef.current && map.removeLayer(gridLayerRef.current);
           return;
         }
@@ -69,7 +74,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue", maxZoom = 1
     }
 
     return () => mapRef.current && mapRef.current.remove();
-  }, [gridSpacingKm, gridColor, maxZoom]); 
+  }, [gridSpacingKm, gridColor]); 
 
   return (
     <div className="map-container">

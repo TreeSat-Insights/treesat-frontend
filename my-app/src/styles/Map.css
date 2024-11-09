@@ -23,13 +23,14 @@
   height: 90%; /* Increased height */
   background-color: white;
   border: 1px solid #ccc;
-  padding: 20px;
+  padding: 25px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   z-index: 1000; /* Ensure it stays on top of the map */
   transform: translate(0, -50%); /* Center the panel vertically */
   opacity: 0; /* Initially hidden */
   visibility: hidden; /* Start as hidden */
   transition: opacity 0.3s ease, visibility 0s 0.3s; /* Smooth transition */
+  border-radius: 25px;
 }
 
 .side-panel.open {
@@ -57,26 +58,27 @@
 }
 
 .side-panel img {
-  max-width: 100%; /* Restrict the image width to the width of the side panel */
-  height: auto; /* Maintain the aspect ratio */
-  object-fit: contain; /* Ensure the image is fully contained within its parent */
-  margin: 10px 0; /* Add some vertical margin */
+  max-width: 100%; 
+  height: auto; 
+  object-fit: contain;
 }
 
 .slider {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap; /* Wrap images if there are too many */
-  gap: 10px; /* Space between images */
-  overflow-y: auto; /* Allow vertical scrolling if content overflows */
-  max-height: 90%; /* Ensure images do not overflow the panel */
-  padding: 10px; /* Add some padding around the content */
+  flex-wrap: wrap; 
+  gap: 10px; 
+  overflow-y: auto; 
+  max-height: 90%; 
+  padding: 30px 30px; 
 }
 
 .loader {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); 
+  font-size: 24px; 
+  z-index: 1001; 
 }

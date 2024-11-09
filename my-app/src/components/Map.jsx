@@ -4,33 +4,33 @@ import "/src/styles/Map.css";
 import CustomSlider from "./ImgSlider";
 import Loader from "./loader";
 
-// const fetchGridData = async (lat, lng) => {
-//   try {
-//     const response = await fetch(`http://ec2-15-160-151-201.eu-south-1.compute.amazonaws.com:8000/scan/${lat}/${lng}`);
-//     if (!response.ok) throw new Error('Network error');
-    
-//     const data = await response.json();
-
-//     console.log(data);
-//     if (data.status !== 'success') throw new Error('API error');
-
-//     return { success: true, images: data.content.map(base64 => `data:image/png;base64,${base64}`) };
-//   } catch (error) {
-//     console.error("Data fetch error:", error);
-//     return { success: false, images: [] };
-//   }
-// };
 const fetchGridData = async (lat, lng) => {
   try {
-    // Temporarily return a test image for now
-    const testImage = "https://cdn.discordapp.com/attachments/1304486605309874207/1304873875527696546/test.png?ex=6730f9ff&is=672fa87f&hm=a04cc0ba11bede1a4aab1f9211add5406932bbf6c895dd184eff1a6e2e474205&"; // Replace with your test image URL or base64 data
+    const response = await fetch(`http://ec2-15-160-151-201.eu-south-1.compute.amazonaws.com:8000/scan/${lat}/${lng}`);
+    if (!response.ok) throw new Error('Network error');
+    
+    const data = await response.json();
 
-    return { success: true, images: [testImage] }; // Return the test image as the response
+    console.log(data);
+    if (data.status !== 'success') throw new Error('API error');
+
+    return { success: true, images: data.content.map(base64 => `data:image/png;base64,${base64}`) };
   } catch (error) {
     console.error("Data fetch error:", error);
     return { success: false, images: [] };
   }
 };
+// const fetchGridData = async (lat, lng) => {
+//   try {
+//     // Temporarily return a test image for now
+//     const testImage = "https://cdn.discordapp.com/attachments/1304486605309874207/1304873875527696546/test.png?ex=6730f9ff&is=672fa87f&hm=a04cc0ba11bede1a4aab1f9211add5406932bbf6c895dd184eff1a6e2e474205&"; // Replace with your test image URL or base64 data
+
+//     return { success: true, images: [testImage] }; // Return the test image as the response
+//   } catch (error) {
+//     console.error("Data fetch error:", error);
+//     return { success: false, images: [] };
+//   }
+// };
 
 export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
   const mapRef = useRef(null), gridLayerRef = useRef(null);
@@ -57,7 +57,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
       };
   
       // Add the layer control to the map
-      L.control.layers(baseLayers).addTo(map);
+      L.control.layers(baseLayers).addTo(map).setPosition('bottomleft');
   
       const createGrid = () => {
         const zoom = map.getZoom();

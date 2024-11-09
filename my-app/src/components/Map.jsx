@@ -6,7 +6,7 @@ import Loader from "./loader";
 
 const fetchGridData = async (lat, lng) => {
   try {
-    const response = await fetch(`http://ec2-35-152-142-1.eu-south-1.compute.amazonaws.com/scan/1/1`);
+    const response = await fetch(`http://ec2-35-152-142-1.eu-south-1.compute.amazonaws.com/scan/1/${lat}/${lng}`);
     if (!response.ok) throw new Error('Network error');
     
     const data = await response.json();
@@ -23,7 +23,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
   const mapRef = useRef(null), gridLayerRef = useRef(null);
   const [sidePanelContent, setSidePanelContent] = useState({ open: false, text: "", images: [], loading: false });
 
-  const MIN_ZOOM_LEVEL = 5, MAX_ZOOM_LEVEL = 18, MIN_ZOOM_GRID = 10;
+  const MIN_ZOOM_LEVEL = 5, MAX_ZOOM_LEVEL = 18, MIN_ZOOM_GRID = 15;
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -42,13 +42,13 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
         for (let lat = Math.floor(bounds.getSouthEast().lat / spacingLat) * spacingLat; lat < bounds.getNorthWest().lat; lat += spacingLat) {
           for (let lng = Math.floor(bounds.getNorthWest().lng / spacingLng) * spacingLng; lng < bounds.getSouthEast().lng; lng += spacingLng) {
             const cellBounds = [[lat, lng], [lat + spacingLat, lng + spacingLng]], center = [lat + spacingLat / 2, lng + spacingLng / 2];
-            const cell = L.rectangle(cellBounds, { color: gridColor, weight: 1, fillOpacity: 0.1 })
+            const cell = L.rectangle(cellBounds, { color: gridColor, weight: 0.4, fillOpacity: 0.1})
               .on("mouseover", () => cell.setStyle({ fillOpacity: 0.3, color: "orange" }))
               .on("mouseout", () => cell.setStyle({ fillOpacity: 0.1, color: gridColor }))
               .on("click", async () => {
                 setSidePanelContent({ open: true, text: `Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`, images: [], loading: true });
                 const { success, images } = await fetchGridData(center[0], center[1]);
-                setSidePanelContent({ open: true, text: `Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`, images, loading: !success });
+                setSidePanelContent({ open: true, text: `Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`, images, loading: false });
                 map.setView([center[0] - 0.1, center[1]], map.getZoom(), { animate: true });
                 cell.setStyle({ zIndex: 2001 });
               });

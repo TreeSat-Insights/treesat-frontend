@@ -8,21 +8,25 @@ const fetchGridData = async (lat, lng) => {
   try {
     const response = await fetch(`http://ec2-35-152-142-1.eu-south-1.compute.amazonaws.com/scan/1/1`);
     if (!response.ok) {
-      throw new Error("Network response error");
+      throw new Error('Network response error');
     }
 
     const data = await response.json();
     console.log(data);
 
-    if (data.status !== "success") {
-      throw new Error("API returned an error status");
+    if (data.status !== 'success') {
+      throw new Error('API returned an error status');
     }
 
-    const images = data.content.map((base64String) => `data:image/png;base64,${base64String}`);
+    // Convert the base64 strings to images
+    const images = data.content.map((base64String) => {
+      return `data:image/png;base64,${base64String}`;
+    });
+
     return { success: true, images };
   } catch (error) {
     console.error("Error fetching or processing data:", error);
-    return { success: false, images: [] };
+    return { success: false, images: [] }; 
   }
 };
 
@@ -52,6 +56,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
 
       const createGrid = () => {
         const zoomLevel = map.getZoom();
+        // Remove the grid if zoom is too low
         if (zoomLevel < MIN_ZOOM_LEVEL_FOR_GRID) {
           gridLayerRef.current && map.removeLayer(gridLayerRef.current);
           return;
@@ -59,8 +64,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
 
         const bounds = map.getBounds();
         const [topLeft, bottomRight] = [bounds.getNorthWest(), bounds.getSouthEast()];
-        const spacingLat = gridSpacingKm / 111,
-          spacingLng = gridSpacingKm / (111 * Math.cos((topLeft.lat * Math.PI) / 180));
+        const spacingLat = gridSpacingKm / 111, spacingLng = gridSpacingKm / (111 * Math.cos(topLeft.lat * Math.PI / 180));
 
         if (gridLayerRef.current) map.removeLayer(gridLayerRef.current);
         const gridLayer = L.layerGroup();
@@ -76,36 +80,42 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
             });
             const center = [(lat + lat + spacingLat) / 2, (lng + lng + spacingLng) / 2];
 
+            // Mouseover and mouseout events to change the style
             cell.on("mouseover", () => cell.setStyle({ fillOpacity: 0.3, color: "orange" }));
             cell.on("mouseout", () => cell.setStyle({ fillOpacity: 0.1, color: gridColor }));
 
+            // Click event to open side panel with the grid cell info and images
             cell.on("click", async () => {
-              setIsSidePanelOpen(true);
-              setSidePanelContent({
-                text: `Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`,
-                images: [], 
-                loading: true // Set loading to true initially
-              });
+              setIsSidePanelOpen(false);
 
+              // Fetch grid data and images from the API
               const { success, images } = await fetchGridData(center[0], center[1]);
               if (success) {
-                setImages(images);
+                setImages(images); 
               } else {
-                setImages([]); // Set to an empty array if the fetch fails
+                setImages([]);
               }
 
               setSidePanelContent({
                 text: `Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`,
-                images: images || [],
-                loading: false, // Set loading to false once data is fetched
+                images: images || [], 
               });
 
-              const adjustedCenter = [center[0] - 0.1, center[1]];
+              setIsSidePanelOpen(true);
+
+              // Adjust the center position to make the clicked cell appear higher
+              const adjustedCenter = [
+                center[0] - 0.1, // Decrease latitude to move the view higher
+                center[1], // Keep the longitude the same
+              ];
+
+              // Set the map view to center on the adjusted position
               mapRef.current.setView(adjustedCenter, mapRef.current.getZoom(), {
-                animate: true,
+                animate: true, // Smooth transition
               });
 
-              cell.setStyle({ zIndex: 2001 });
+              // Optionally set z-index to ensure the clicked cell is visible
+              cell.setStyle({ zIndex: 2001 }); // Higher than the side panel z-index
             });
 
             gridLayer.addLayer(cell);
@@ -131,18 +141,16 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
           <h2>Details</h2>
           <p>{sidePanelContent.text}</p>
           <div className="slider">
-            {sidePanelContent.loading ? (
-              <p>Loading...</p>
-            ) : images.length > 0 ? (
-              <CustomSlider>
-                {images.map((img, index) => (
+          <CustomSlider>
+            {sidePanelContent.images.length > 0 ? (
+                sidePanelContent.images.map((img, index) => (
                   <img key={index} src={img} alt={`Grid Cell ${index + 1}`} />
-                ))}
-              </CustomSlider>
-            ) : (
-              <p>No images available</p>
-            )}
-          </div>
+                ))
+              ) : (
+                <p>No images available</p>
+              )}
+          </CustomSlider>
+        </div>
         </div>
       )}
     </div>

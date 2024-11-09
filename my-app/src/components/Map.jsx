@@ -86,7 +86,13 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
 
             // Click event to open side panel with the grid cell info and images
             cell.on("click", async () => {
-              setIsSidePanelOpen(false);
+              setIsSidePanelOpen(true);
+
+              setSidePanelContent({
+                text: `Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`,
+                images: [], 
+                loading: true // Set loading to true initially
+              });
 
               // Fetch grid data and images from the API
               const { success, images } = await fetchGridData(center[0], center[1]);
@@ -98,15 +104,15 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
 
               setSidePanelContent({
                 text: `Cell center: (${center[0].toFixed(3)}, ${center[1].toFixed(3)})`,
-                images: images || [], 
+                images: images || [],
+                loading: false,
               });
 
               setIsSidePanelOpen(true);
 
-              // Adjust the center position to make the clicked cell appear higher
               const adjustedCenter = [
-                center[0] - 0.1, // Decrease latitude to move the view higher
-                center[1], // Keep the longitude the same
+                center[0] - 0.1, 
+                center[1], 
               ];
 
               // Set the map view to center on the adjusted position
@@ -140,17 +146,19 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
           <button className="close-btn" onClick={() => setIsSidePanelOpen(false)}>X</button>
           <h2>Details</h2>
           <p>{sidePanelContent.text}</p>
-          <div className="App">
-          <CustomSlider>
-            {sidePanelContent.images.length > 0 ? (
-                sidePanelContent.images.map((img, index) => (
+          <div className="slider">
+            {sidePanelContent.loading ? (
+              <p>Loading...</p>
+              ) : images.length > 0 ? (
+              <CustomSlider>
+                {images.map((img, index) => (
                   <img key={index} src={img} alt={`Grid Cell ${index + 1}`} />
-                ))
+                ))}
+              </CustomSlider>
               ) : (
-                <p>No images available</p>
-              )}
-          </CustomSlider>
-        </div>
+              <p>No images available</p>
+            )}
+          </div>
         </div>
       )}
     </div>

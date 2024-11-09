@@ -6,7 +6,7 @@ import Loader from "./loader";
 
 const fetchGridData = async (lat, lng) => {
   try {
-    const response = await fetch(`http://ec2-35-152-142-1.eu-south-1.compute.amazonaws.com/scan/1/1`);
+    const response = await fetch(`http://ec2-35-152-142-1.eu-south-1.compute.amazonaws.com/scan/1/${lat};${lng}`);
     if (!response.ok) throw new Error('Network error');
     
     const data = await response.json();
@@ -27,7 +27,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
 
   useEffect(() => {
     if (!mapRef.current) {
-      const map = L.map("map", { minZoom: MIN_ZOOM_LEVEL, maxZoom: MAX_ZOOM_LEVEL }).setView([51.505, -0.09], 13);
+      const map = L.map("map", { minZoom: MIN_ZOOM_LEVEL, maxZoom: MAX_ZOOM_LEVEL }).setView([60.1699, 24.9384], 10);
       mapRef.current = map;
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: MAX_ZOOM_LEVEL }).addTo(map);
 

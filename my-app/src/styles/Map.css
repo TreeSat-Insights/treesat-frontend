@@ -16,11 +16,11 @@
 
 .side-panel {
   position: absolute;
-  top: 70%;  /* Move the panel a bit lower */
+  top: 50%;  /* Move the panel a bit lower */
   left: 50%;
-  width: 60%; /* Adjust the width as needed */
+  width: 80%; /* Adjust the width as needed */
   max-width: 600px; /* Optional max-width */
-  height: 55%; /* Increased height */
+  height: 90%; /* Increased height */
   background-color: white;
   border: 1px solid #ccc;
   padding: 20px;
@@ -54,4 +54,22 @@
 
 .close-btn:hover {
   background-color: #e60000;
+}
+
+.side-panel img {
+  width: calc(100% - 40px); /* Full width of the side panel minus a 20px margin on each side */
+  height: auto; /* Maintain aspect ratio */
+  margin: 10px; /* Add a 10px margin around each image */
+  object-fit: contain; /* Ensure images scale well while preserving aspect ratio */
+}
+
+.slider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Wrap images if there are too many */
+  gap: 10px; /* Space between images */
+  overflow-y: auto; /* Allow vertical scrolling if content overflows */
+  max-height: 90%; /* Ensure images do not overflow the panel */
+  padding: 10px; /* Add some padding around the content */
 }

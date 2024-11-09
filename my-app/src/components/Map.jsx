@@ -140,7 +140,7 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
           <button className="close-btn" onClick={() => setIsSidePanelOpen(false)}>X</button>
           <h2>Details</h2>
           <p>{sidePanelContent.text}</p>
-          <div className="App">
+          <div className="slider">
           <CustomSlider>
             {sidePanelContent.images.length > 0 ? (
                 sidePanelContent.images.map((img, index) => (

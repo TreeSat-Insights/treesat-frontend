@@ -47,8 +47,8 @@ export default function Map({ gridSpacingKm = 5, gridColor = "blue" }) {
       const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: MAX_ZOOM_LEVEL });
       const esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: MAX_ZOOM_LEVEL });
   
-      // Add the OSM layer by default
-      osmLayer.addTo(map);
+      // Add the ESRI layer by default
+      esriLayer.addTo(map);
   
       // Create a layers object for the switcher
       const baseLayers = {
